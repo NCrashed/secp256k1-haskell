@@ -4,8 +4,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE NoFieldSelectors #-}
 
 -- |
 -- Module      : Crypto.Secp256k1
@@ -90,22 +88,22 @@ import Text.Read
     readPrec,
   )
 
-newtype PubKey = PubKey {get :: ByteString}
+newtype PubKey = PubKey {getPubKey :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
-newtype Msg = Msg {get :: ByteString}
+newtype Msg = Msg {getMsg :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
-newtype Sig = Sig {get :: ByteString}
+newtype Sig = Sig {getSig :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
-newtype SecKey = SecKey {get :: ByteString}
+newtype SecKey = SecKey {getSecKey :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
-newtype Tweak = Tweak {get :: ByteString}
+newtype Tweak = Tweak {getTweak :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
-newtype CompactSig = CompactSig {get :: ByteString}
+newtype CompactSig = CompactSig {getCompactSig :: ByteString}
   deriving (Eq, Generic, Hashable, NFData)
 
 instance Read PubKey where
@@ -119,7 +117,7 @@ instance IsString PubKey where
       e = error "Could not decode public key from hex string"
 
 instance Show PubKey where
-  showsPrec _ = showsHex . (.get)
+  showsPrec _ = showsHex . getPubKey
 
 instance Read Msg where
   readPrec = parens $ do
@@ -132,7 +130,7 @@ instance IsString Msg where
       e = error "Could not decode message from hex string"
 
 instance Show Msg where
-  showsPrec _ = showsHex . (.get)
+  showsPrec _ = showsHex . getMsg
 
 instance Read Sig where
   readPrec = parens $ do
@@ -145,7 +143,7 @@ instance IsString Sig where
       e = error "Could not decode signature from hex string"
 
 instance Show Sig where
-  showsPrec _ = showsHex . (.get)
+  showsPrec _ = showsHex . getSig
 
 instance Read SecKey where
   readPrec = parens $ do
@@ -158,7 +156,7 @@ instance IsString SecKey where
       e = error "Colud not decode secret key from hex string"
 
 instance Show SecKey where
-  showsPrec _ = showsHex . (.get)
+  showsPrec _ = showsHex . getSecKey
 
 instance Read Tweak where
   readPrec = parens $ do
@@ -171,7 +169,7 @@ instance IsString Tweak where
       e = error "Could not decode tweak from hex string"
 
 instance Show Tweak where
-  showsPrec _ = showsHex . (.get)
+  showsPrec _ = showsHex . getTweak
 
 -- | Import 64-byte 'ByteString' as 'Sig'.
 sig :: ByteString -> Maybe Sig

@@ -1,5 +1,3 @@
-{-# LANGUAGE NoFieldSelectors #-}
-
 -- |
 -- Module      : Crypto.Secp256k1.Internal.Context
 -- License     : UNLICENSE

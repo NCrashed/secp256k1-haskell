@@ -1,6 +1,5 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE ImportQualifiedPost #-}
-{-# LANGUAGE OverloadedRecordDot #-}
 
 module Crypto.Secp256k1Spec (spec) where
 
@@ -79,24 +78,24 @@ hexToBytes = decodeBase16 . assertBase16 . B8.pack
 isStringMsg :: Msg -> Bool
 isStringMsg m = m == fromString (cs m')
   where
-    m' = (extractBase16 . encodeBase16) m.get
+    m' = (extractBase16 . encodeBase16) (getMsg m)
 
 isStringSecKey :: SecKey -> Bool
 isStringSecKey k = k == fromString (cs hex)
   where
-    hex = (extractBase16 . encodeBase16) k.get
+    hex = (extractBase16 . encodeBase16) (getSecKey k)
 
 isStringTweak :: SecKey -> Bool
 isStringTweak k = t == fromString (cs hex)
   where
-    t = (fromMaybe e . tweak) k.get
-    hex = (extractBase16 . encodeBase16) t.get
+    t = (fromMaybe e . tweak) (getSecKey k)
+    hex = (extractBase16 . encodeBase16) (getTweak t)
     e = error "Could not extract tweak from secret key"
 
 showReadTweak :: SecKey -> Bool
 showReadTweak k = showRead t
   where
-    t = tweak k.get
+    t = tweak (getSecKey k)
 
 showReadPubKey :: Ctx -> SecKey -> Bool
 showReadPubKey ctx k =
@@ -168,7 +167,7 @@ serializeCompactSigTest ctx (fm, fk) =
 
 serializeSecKeyTest :: SecKey -> Bool
 serializeSecKeyTest fk =
-  case secKey fk.get of
+  case secKey (getSecKey fk) of
     Just fk' -> fk == fk'
     Nothing -> False
 
